@@ -1,6 +1,7 @@
 import random
 from typing import List
 
+
 class Cell:
     def __init__(self):
         self.mine = False
@@ -83,6 +84,9 @@ class Minesweeper:
                     ch = 'F' if cell.flagged else '.'
                 row_display.append(ch)
             print(f"{r:2} " + " ".join(row_display))
+    
+    def  show_mesgage(self,msg):
+        print(str(msg))
 
 
 def main():
