@@ -1,4 +1,5 @@
 import random
+import argparse
 from typing import List
 
 
@@ -90,7 +91,13 @@ class Minesweeper:
 
 
 def main():
-    game = Minesweeper()
+    parser = argparse.ArgumentParser(description="Play Minesweeper on the command line")
+    parser.add_argument("--rows", type=int, default=9, help="number of rows")
+    parser.add_argument("--cols", type=int, default=9, help="number of columns")
+    parser.add_argument("--mines", type=int, default=10, help="number of mines")
+    args = parser.parse_args()
+
+    game = Minesweeper(rows=args.rows, cols=args.cols, mines=args.mines)
     while True:
         game.display()
         cmd = input("Enter command (r row col: reveal, f row col: flag): ").strip().split()
