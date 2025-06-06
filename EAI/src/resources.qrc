@@ -1,0 +1,8 @@
+<RCC>
+  <qresource prefix="&lt;logo>">
+    <file>resource/EVA_logo</file>
+  </qresource>
+  <qresource prefix="&lt;icon>">
+    <file>resource/EVA_logo_light_gray.png</file>
+  </qresource>
+</RCC>

@@ -1,0 +1,36 @@
+{
+    "AE001":{
+      "zh-tw":"干涉/間隙",
+      "en": "Interfere/Gap"
+    },
+    "AE002":{
+      "zh-tw":"生鏽/髒汙",
+      "en": "Rust/Dirty"
+    },
+    "AE003":{
+      "zh-tw":"螺孔不良(未攻牙/未鎖緊/滑牙/偏移)",
+      "en": "Screw Hole NG/Slipping/Shift"
+    },
+    "AE004":{
+      "zh-tw":"脫漆/印刷不良",
+      "en": "Paint Fall Off/Poor Printing"
+    },
+    "AE005":{
+      "zh-tw":"貼紙問題 ",
+      "en": "Sticker problem"
+    },
+    "AE006":{
+      "zh-tw":"PIN針歪斜",
+      "en": "PIN is skew"
+    },
+    "AE007":{
+      "zh-tw":"原材不良",
+      "en": "Bad material"
+    },
+    "AE008":{
+      "zh-tw":"外購品不良",
+      "en": "Defective purchased products"
+    },
+    "END":{},
+    "CLEAR":{}
+  }

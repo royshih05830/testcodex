@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>EditROINote_Dialog</class>
+ <widget class="QDialog" name="EditROINote_Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>968</width>
+    <height>644</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Edit Note/Threshold </string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="0" column="0" colspan="4">
+    <widget class="QWidget" name="widget" native="true">
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QTableWidget" name="tableWidget">
+        <attribute name="horizontalHeaderStretchLastSection">
+         <bool>false</bool>
+        </attribute>
+        <column>
+         <property name="text">
+          <string>Order</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Image</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Note</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Threshold</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>PASS frame</string>
+         </property>
+        </column>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QPushButton" name="reset_threshold_pushButton">
+     <property name="toolTip">
+      <string>reset all threshold/offset to default value.</string>
+     </property>
+     <property name="text">
+      <string>Reset Threshold</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="3">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QPushButton" name="reset_passframe_pushButton">
+     <property name="toolTip">
+      <string>Reset all roi PASS frame to default value</string>
+     </property>
+     <property name="text">
+      <string>Reset PASS frame</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="2">
+    <widget class="QPushButton" name="clean_pushButton">
+     <property name="toolTip">
+      <string>clean all roi data from train mode and reset to default value.</string>
+     </property>
+     <property name="text">
+      <string>Clean Threshold</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>EditROINote_Dialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>316</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

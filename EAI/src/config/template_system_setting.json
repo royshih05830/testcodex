@@ -1,0 +1,125 @@
+{    
+    "projectName": "",
+    "serialNumber": "",
+    "productNumber": "",
+    "type": 0,
+    "layers": 1,        
+    "keep_log": false,   
+    "useOffsetTheshold": false,        
+    "training": {      
+      "imagetable_column_count": 10,
+      "server": {
+        "ip": "",
+        "port": 8000,
+        "account": "",
+        "password": ""
+      },
+      "type": [
+        {
+          "index": 0,
+          "description": "Dual In Line Package Inspection",
+          "nickname":"DIP",
+          "name": "/train/DualInLinePackageInspection",
+          "parm": [
+            {
+              "exportNVEngine": false,
+              "trainingDataPath": "",
+              "trainingDataRootPath": "/app/data",
+              "epoch": 1
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "description": "Standard Operating Procedures Inspection",
+          "nickname": "SOP",
+          "name": "/train/",
+          "parm":[
+            {
+              "trainingDataPath": "",
+              "trainingDataRootPath": "/app/data"
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "description": "Anomaly Detection",
+          "nickname":"AD",
+          "name": "/train/AnomalyDetection",
+          "parm": [
+            {
+              "trainingDataPath": "",
+              "trainingDataRootPath": "/app/data"
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "description": "Visual Inspection",
+          "nickname":"VI",
+          "name": "/train/VisualInspection",
+          "parm": [
+            {
+              "trainingDataPath": "",
+              "trainingDataRootPath": "/app/data"
+            }
+          ]
+        }
+      ]
+    },
+    "storage": {
+      "server": {
+        "ip": "",        
+        "account": "",
+        "password": "",
+        "path":""
+      }
+    },
+    "inspection":{
+      "useTestVideo":false,
+      "filePath":""
+    },
+    "support_image_list": [
+      ".png",
+      ".jpg",
+      ".bmp"
+    ],
+    "pipeline": {
+      "source": [
+        "USB3 Camera",
+        "Web Camera",
+        "Basler Camera"
+      ],
+      "trainging": {
+        "USB3 Camera": "aravissrc usb-mode=1 ! video/x-bayer, format=grbg ! bayer2rgb ! videoconvert ! appsink name=sink emit-signals=True",
+        "Web Camera": "v4l2src name=src ! videoconvert ! video/x-raw,format=BGR ! appsink name=sink emit-signals=True",
+        "Basler Camera": "pylonsrc name=src ! videoconvert ! appsink name=sink emit-signals=True"
+      },
+      "recording":{
+        "USB3 Camera":"aravissrc usb-mode=1 ! video/x-bayer, format=grbg ! bayer2rgb ! videoconvert ! tee name=t t. ! queue ! videoconvert ! appsink name=sink emit-signals=True t. ! queue ! videoconvert ! x264enc tune=zerolatency bitrate=5000 ! mp4mux ! filesink location=test_{}.mp4",
+        "Web Camera":"v4l2src ! videoconvert ! tee name=t t. ! queue ! videoconvert ! appsink name=sink emit-signals=True t. ! queue ! videoconvert ! x264enc tune=zerolatency bitrate=5000 ! mp4mux ! filesink location=test_{}.mp4",
+        "Basler Camera": "pylonsrc ! videoconvert ! tee name=t t. ! queue ! videoconvert ! appsink name=sink emit-signals=True t. ! queue ! videoconvert ! x264enc tune=zerolatency bitrate=5000 ! mp4mux ! filesink location=test_{}.mp4"
+      },
+      "operation": {        
+        "DIP": {
+          "source": {
+            "Web Camera": "v4l2src name=src ! videoconvert ! video/x-raw,format=BGR ! appsink name=sink emit-signals=True",
+            "Basler Camera": "pylonsrc name=src ! videoconvert ! appsink name=sink emit-signals=True",
+            "USB3 Camera": "aravissrc usb-mode=1 ! video/x-bayer, format=grbg ! bayer2rgb ! videoconvert ! appsink name=sink emit-signals=True",
+            "testVideo": "filesrc location=\"{}\" ! qtdemux ! h264parse ! avdec_h264 ! videoconvert ! appsink name=sink emit-signals=True"
+          },
+          "inference": {
+            "inspection": "appsrc name=src ! videoconvert ! adalign gold-image-path=\"{}\" anchor-pattern-file-path=\"{}\" golden-labeled-file-path=\"{}\" save-result=True search-width=500 search-height=500 ! convert_roi ! adrt model=\"{}\" rgbconv=True scale=0.0039 mean=\"0 0 0\" query=\"//alignment\" engine-id=\"//adrt\" ! adtrans_classifier label=\"{}\" ! videoconvert ! appsink name=sink",
+            "insepctionWithThreshold": "appsrc name=src ! videoconvert ! adalign gold-image-path=\"{}\" anchor-pattern-file-path=\"{}\" golden-labeled-file-path=\"{}\" save-result=True search-width=500 search-height=500 ! convert_roi ! adrt model=\"{}\" rgbconv=True scale=0.0039 mean=\"0 0 0\" query=\"//alignment\" engine-id=\"//adrt\" ! adtrans_classifier label=\"{}\" ! admetafilter identify-string=lower-than-roi-threshold roi-threshold-file-path=\"{}\" ! videoconvert ! appsink name=sink"            
+          }
+        },
+        "SOP": {
+          "inspection": "aravissrc usb-mode=1 ! video/x-bayer, format=grbg, framerate=10/1 ! bayer2rgb ! videoconvert ! videoflip method=2 ! adinspect offset-threshold=false search-height=250 search-width=250 pass-frame=0 check-frame=5 show-threshold=true gold-image-path=\"{}\" golden-labeled-file-path=\"{}\" anchor-pattern-file-path=\"{}\" ! draw_inspection print=false ! videoconvert ! appsink name=sink sync=false emit-signals=True",
+          "offsetInsepction": "aravissrc usb-mode=1 ! video/x-bayer, format=grbg, framerate=10/1  ! bayer2rgb ! videoconvert ! videoflip method=2 ! adinspect offset-threshold=true search-height=250 search-width=250 pass-frame=0 check-frame=5 show-threshold=false gold-image-path=\"{}\" golden-labeled-file-path=\"{}\" anchor-pattern-file-path=\"{}\" ! draw_inspection print=false ! videoconvert ! appsink name=sink emit-signals=True",
+          "testVideo": "filesrc location=\"{}\" ! qtdemux ! h264parse ! avdec_h264 ! videoconvert ! adinspect offset-threshold=false search-height=250 search-width=250 pass-frame=0 check-frame=5 show-threshold=true gold-image-path=\"{}\" golden-labeled-file-path=\"{}\" anchor-pattern-file-path=\"{}\" ! draw_inspection print=false ! videoconvert ! appsink name=sink emit-signals=True",
+          "offsetTestVideo": "filesrc location=\"{}\" ! qtdemux ! h264parse ! avdec_h264 ! videoconvert ! adinspect offset-threshold=true search-height=250 search-width=250 pass-frame=0 check-frame=10 show-threshold=false gold-image-path=\"{}\" golden-labeled-file-path=\"{}\" anchor-pattern-file-path=\"{}\" ! draw_inspection print=false ! videoconvert ! appsink name=sink emit-signals=True",
+          "training": "filesrc location=\"{}\" ! decodebin ! videoconvert ! roiinspect search-height=250 search-width=250 gold-image-path=\"{}\" golden-labeled-file-path=\"{}\" anchor-pattern-file-path=\"{}\" ! videoconvert ! appsink name=sink emit-signals=True"
+        }
+      }
+    }
+  } 

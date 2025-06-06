@@ -1,0 +1,5 @@
+{
+    "MESWebService": {
+      "url": "http://itetp.adlinktech.com/Modules/SmartFactory/AutomationTP.asmx/GetADLINKSNInfoJson"
+    }
+}

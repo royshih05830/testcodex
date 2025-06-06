@@ -1,0 +1,9 @@
+qtwidgets
+qtpy
+natsort
+PySide2
+Qt.py
+numpy
+scipy
+requests
+pygame
